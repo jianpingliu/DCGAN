@@ -43,23 +43,6 @@ def conv2d_transpose(x,
         return conv_transpose
 
 
-def fc_2(x,
-         num_outputs=1,
-         weights_initializer=tf.truncated_normal_initializer(stddev=0.02),
-         biases_initializer=tf.constant_initializer(value=0.0),
-         reuse=False,
-         scope="fc"):
-
-    output = tf.contrib.layers.fully_connected(
-        x,
-        num_outputs=num_outputs,
-        weights_initializer=weights_initializer,
-        biases_initializer=biases_initializer,
-        reuse=reuse,
-        scope=scope)
-    return output
-
-
 def fc(x, num_outputs, scope="fc"):
 
     with tf.variable_scope(scope):
