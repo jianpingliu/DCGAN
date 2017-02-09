@@ -118,34 +118,3 @@ class TFRecordsReader(object):
         # Generate a batch of images and labels by building up a queue of examples.
         return self._generate_image_and_label_batch(
             image, label, min_queue_examples, batch_size, shuffle=False)
-
-
-def test():
-    reader = TFRecordsReader(
-        image_height=218,
-        image_width=178,
-        image_channels=3,
-        image_format="jpeg",
-        directory="data/celebA",
-        filename_pattern="celebA-*",
-        crop=True,
-        crop_height=108,
-        crop_width=108,
-        resize=True,
-        resize_height=64,
-        resize_width=64,
-        num_examples_per_epoch=64)
-
-    images, labels = reader.inputs(batch_size=64)
-
-    sess = tf.Session()
-
-    init = tf.global_variables_initializer()
-    sess.run(init)
-    tf.train.start_queue_runners(sess=sess)
-
-    labels, images = sess.run([labels, images])
-
-
-if __name__ == "__main__":
-    test()
