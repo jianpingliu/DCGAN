@@ -120,8 +120,8 @@ def generator(z):
         # project z and reshape
         oh, ow = FLAGS.output_height, FLAGS.output_width
 
-        z_ = ops.fc(z, 512 * oh/16 * ow/16, scope="project")
-        z_ = tf.reshape(z_, [-1, oh/16, ow/16, 512])
+        z_ = ops.fc(z, 512 * oh / 16 * ow / 16, scope="project")
+        z_ = tf.reshape(z_, [-1, oh / 16, ow / 16, 512])
 
         # batch norm
         norm0 = ops.batch_norm(z_, scope="batch_norm0", is_training=True)
@@ -131,7 +131,8 @@ def generator(z):
 
         # conv1
         conv1 = ops.conv2d_transpose(
-            h0, [FLAGS.batch_size, oh/8, ow/8, 256], scope="conv_tranpose1")
+            h0, [FLAGS.batch_size, oh / 8, ow / 8, 256],
+            scope="conv_tranpose1")
 
         # batch norm
         norm1 = ops.batch_norm(conv1, scope="batch_norm1", is_training=True)
@@ -141,8 +142,8 @@ def generator(z):
 
         # conv2
         conv2 = ops.conv2d_transpose(
-            h1, [FLAGS.batch_size, oh/4, ow/4, 128], scope="conv_tranpose2")
-
+            h1, [FLAGS.batch_size, oh / 4, ow / 4, 128],
+            scope="conv_tranpose2")
 
         # batch norm
         norm2 = ops.batch_norm(conv2, scope="batch_norm2", is_training=True)
@@ -152,18 +153,18 @@ def generator(z):
 
         # conv3
         conv3 = ops.conv2d_transpose(
-            h2, [FLAGS.batch_size, oh/2, ow/2, 64], scope="conv_tranpose3")
+            h2, [FLAGS.batch_size, oh / 2, ow / 2, 64], scope="conv_tranpose3")
 
         # batch norm
         norm3 = ops.batch_norm(conv3, scope="batch_norm3", is_training=True)
-
 
         # ReLU
         h3 = tf.nn.relu(norm3)
 
         # conv4
         conv4 = ops.conv2d_transpose(
-            h3, [FLAGS.batch_size, oh, ow, FLAGS.input_channels], scope="conv_tranpose4")
+            h3, [FLAGS.batch_size, oh, ow, FLAGS.input_channels],
+            scope="conv_tranpose4")
 
         # tanh
         h4 = tf.nn.tanh(conv4)
@@ -215,6 +216,5 @@ def inputs(batch_size=64):
         images, _ = reader.inputs(batch_size=64)
         float_images = tf.cast(images, tf.float32)
         float_images = float_images / 127.5 - 1.0
-
 
     return float_images

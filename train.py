@@ -13,17 +13,16 @@ FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('log_dir', './celebA_log_dir', 'log directory')
 tf.app.flags.DEFINE_integer('train_steps', 1000, 'number of train steps')
 
+
 def train():
     # placeholder for z
-    z = tf.placeholder(
-        tf.float32, [FLAGS.batch_size, FLAGS.z_dim], name='z')
+    z = tf.placeholder(tf.float32, [FLAGS.batch_size, FLAGS.z_dim], name='z')
 
     # get images
     images = dcgan.inputs(batch_size=FLAGS.batch_size)
 
     # logits
-    D_logits_real, D_logits_fake, generated_images = dcgan.inference(images,
-                                                                   z)
+    D_logits_real, D_logits_fake, generated_images = dcgan.inference(images, z)
     # loss
     d_loss, g_loss = dcgan.loss(D_logits_real, D_logits_fake)
 
@@ -43,8 +42,7 @@ def train():
         for step in range(training_steps):
 
             random_z = np.random.uniform(
-                -1, 1, size=(FLAGS.batch_size,
-                             FLAGS.z_dim)).astype(np.float32)
+                -1, 1, size=(FLAGS.batch_size, FLAGS.z_dim)).astype(np.float32)
 
             sess.run(train_d_op, feed_dict={z: random_z})
             sess.run(train_g_op, feed_dict={z: random_z})
@@ -57,8 +55,7 @@ def train():
             print("{}: step {}, d_loss {:g}, g_loss {:g}".format(
                 time_str, step, discrimnator_loss, generator_loss))
 
-            test_images = sess.run(
-                generated_images, feed_dict={z: random_z})
+            test_images = sess.run(generated_images, feed_dict={z: random_z})
 
             image_path = os.path.join(FLAGS.log_dir,
                                       "sampled_images_%d.jpg" % step)

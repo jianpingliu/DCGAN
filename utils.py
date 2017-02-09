@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.misc
 
+
 def grid_plot(images, size, path):
     images = (images + 1.0) / 2.0
 
